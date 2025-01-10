@@ -1,8 +1,8 @@
-package kv
+package kvs
 
 import (
-	"fmt"
-	"github.com/cloudflare/cloudflare-go"
+	"github.com/cloudflare/cloudflare-go/v4"
+	"github.com/cloudflare/cloudflare-go/v4/option"
 	"github.com/micro-services-roadmap/cloudflare/util"
 )
 
@@ -11,7 +11,7 @@ var (
 	Token        = "ENC(0TaSRlLDFeZJumH6XMXdi9hUnHJnMw0Y2jULnACnFiz7AmQbqo3HDoiv2HYgSSrmpNQ22uRLPTgIG9utt/RpYb96hftCjG/vlliesXo6bA4=)"
 	AccountIDKey = "CLOUDFLARE_ACCOUNT_ID"
 	AccountID    = "ENC(KvPG+Lg3btQhGyVT61jzH0Qt/1IyCjX4ki/XH+CSLSD5qsg/CJdvnJtgOgmCfaPn5+8qI+2/jTbt//5sBE7RV1PunI9nyq8iOTiJdGU2XVU=)"
-	API          *cloudflare.API
+	Client       *cloudflare.Client
 )
 
 func init() {
@@ -22,9 +22,5 @@ func init() {
 	Token = util.GetEnvDefault(TokenKey, Token)
 
 	// 3. init cloudflare api
-	if api, err := cloudflare.NewWithAPIToken(Token); err != nil {
-		fmt.Printf("cloudflare.NewWithAPIToken faled: %v\n", err)
-	} else {
-		API = api
-	}
+	Client = cloudflare.NewClient(option.WithAPIToken(Token))
 }

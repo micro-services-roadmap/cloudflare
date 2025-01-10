@@ -1,9 +1,10 @@
 package worker
 
 import (
-	"github.com/micro-services-roadmap/cloudflare/kv"
-	"github.com/micro-services-roadmap/cloudflare/kv/cf"
+	"github.com/micro-services-roadmap/cloudflare/kvs"
+	"github.com/micro-services-roadmap/cloudflare/kvs/cf"
 	"github.com/micro-services-roadmap/cloudflare/util"
+	"github.com/spf13/cast"
 	"strconv"
 )
 
@@ -20,18 +21,14 @@ func init() {
 }
 
 func NextWorkerID() (int64, error) {
-	readResp, err := cf.GetWorkersKV(kv.AccountID, Namespace, KeyUidsWorker)
+	readResp, err := cf.GetWorkersKV(kvs.AccountID, Namespace, KeyUidsWorker)
 	if err != nil {
 		return 0, err
 	}
 
-	currentID, err := strconv.Atoi(string(readResp))
-	if err != nil {
-		return 0, err
-	}
-
+	currentID := cast.ToInt64(readResp.Value)
 	nextId := int64(currentID + 1)
-	if _, err = cf.WriteWorkersKV(kv.AccountID, Namespace, KeyUidsWorker, strconv.FormatInt(nextId, 10)); err != nil {
+	if _, err = cf.WriteWorkersKV(kvs.AccountID, Namespace, KeyUidsWorker, strconv.FormatInt(nextId, 10)); err != nil {
 		return 0, err
 	}
 	return nextId, nil

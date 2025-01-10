@@ -1,8 +1,8 @@
 package main
 
 import (
-	_ "github.com/micro-services-roadmap/cloudflare/kv"
-	_ "github.com/micro-services-roadmap/cloudflare/kv/worker"
+	_ "github.com/micro-services-roadmap/cloudflare/kvs"
+	_ "github.com/micro-services-roadmap/cloudflare/kvs/worker"
 )
 
 func main() {
