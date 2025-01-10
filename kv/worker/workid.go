@@ -4,14 +4,14 @@ import (
 	"github.com/micro-services-roadmap/cloudflare/kv"
 	"github.com/micro-services-roadmap/cloudflare/kv/cf"
 	"github.com/micro-services-roadmap/cloudflare/util"
-	"github.com/spf13/cast"
 	"strconv"
 )
 
 var (
 	KeyUidsWorker = "uids-worker"
 	NamespaceKey  = "CLOUDFLARE_KV_NAMESPACE"
-	Namespace     = "ENC(4jS+nQOD3uyEklfxGq/bBTZHv6ehn4PNDhOYExOIvwQr+Tju+pat+hQGRWQJfTh1/vvrRnjORr3D0GZxz4dlZpjlSzBZEvoZFZtVbNgtPZM=)"
+	Namespace     = "ENC(9aNc9rnyBiNExymn87ObqhkVI4EuojUgzYYOY8POsySMb2ESlC3XiIAqxNYZDUR3bEOEKGXkCBI+n8n5jDv8eLn1sbF3kipyqZXFjeZN1Ws=)"
+	// NamespaceName in cloudflare: prod-uid-worker
 )
 
 func init() {
@@ -31,9 +31,8 @@ func NextWorkerID() (int64, error) {
 	}
 
 	nextId := int64(currentID + 1)
-	if _, err = cf.WriteWorkersKV(kv.AccountID, Namespace, KeyUidsWorker, cast.ToString(nextId)); err != nil {
+	if _, err = cf.WriteWorkersKV(kv.AccountID, Namespace, KeyUidsWorker, strconv.FormatInt(nextId, 10)); err != nil {
 		return 0, err
 	}
-
 	return nextId, nil
 }
