@@ -1,5 +1,9 @@
 # cloudflare
 
+```shell
+go get github.com/micro-services-roadmap/cloudflare@v0.0.2
+```
+
 ## cloudflare-kv
 
 1. set follow env
